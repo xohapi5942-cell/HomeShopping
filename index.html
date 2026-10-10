@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home Shopping</title>
+<style>
+:root{--bg:#f3f6f1;--card:#fff;--ink:#1c2a22;--mut:#6b7a70;--pri:#1f6f54;--acc:#e8a33d;--line:#dbe3dc;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a15;--card:#1b261f;--ink:#e9f0ea;--mut:#95a59a;--pri:#3fb287;--line:#2b3a30}}
+:root[data-theme="dark"]{--bg:#121a15;--card:#1b261f;--ink:#e9f0ea;--mut:#95a59a;--pri:#3fb287;--line:#2b3a30}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+button,input{font:inherit;color:inherit}
+#app{max-width:440px;margin:0 auto;height:100%;display:flex;flex-direction:column;position:relative}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--pri);color:#fff}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 18px;font-family:system-ui,sans-serif}
+.stat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--pri);border-radius:12px;padding:14px}
+.stat b{display:block;font-size:30px;font-family:Georgia,serif;color:var(--pri)}.stat span{color:var(--mut);font-size:13px}
+h1{margin:0;font-size:26px;letter-spacing:.3px;color:#fff}
+.burger{background:none;border:0;padding:8px;cursor:pointer;display:grid;gap:5px}
+.burger i{display:block;width:24px;height:3px;background:#fff;border-radius:2px}
+.dots{display:flex;justify-content:center;gap:56px;padding:6px 0 10px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--line);border:0;padding:0;cursor:pointer;position:relative}
+.dot:before{content:"";position:absolute;inset:-14px}
+main{flex:1;overflow-y:auto;padding:8px 18px 18px}
+.btnrow{display:grid;gap:12px;margin-top:22px}
+.big{padding:16px;border-radius:14px;border:0;background:var(--pri);color:#fff;font-size:18px;cursor:pointer}
+.big.alt{background:var(--card);color:var(--ink);border:2px solid var(--pri)}
+.pop{animation:pop .25s ease}@keyframes pop{from{transform:scale(.9);opacity:0}}
+.hint{color:var(--mut);font-size:14px;text-align:center;margin-top:18px;font-family:system-ui,sans-serif}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;font-family:system-ui,sans-serif}
+.item .em{font-size:38px;text-align:center}.item b{display:block;margin-top:6px}
+.item span{color:var(--mut);font-size:14px}
+nav[hidden]{display:none}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card)}
+nav button{flex:1;padding:12px 0;background:none;border:0;font-family:system-ui,sans-serif;font-size:13px;cursor:pointer;color:var(--ink)}
+nav button.on{color:var(--pri);font-weight:700}nav button:disabled{opacity:.35;cursor:not-allowed}
+nav .ic{display:block;font-size:20px}
+.form{display:grid;gap:12px;margin-top:10px;font-family:system-ui,sans-serif}
+.sel{padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.form input,.form textarea{padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.msg{font-family:system-ui,sans-serif;font-size:14px;padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line)}
+.err{color:#c0392b}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:78%;background:var(--card);box-shadow:-8px 0 24px rgba(0,0,0,.25);padding:24px 20px;transform:translateX(100%);transition:transform .25s;z-index:5;font-family:system-ui,sans-serif}
+.drawer.open{transform:none}.drawer h3{margin:0 0 14px;font-family:Georgia,serif}
+.drawer p{padding:12px 0;margin:0;border-bottom:1px solid var(--line)}
+.link{background:none;border:0;color:var(--pri);cursor:pointer;padding:6px 0;font-family:system-ui,sans-serif}
+h2{margin:6px 0 4px;font-size:22px}
+.tw{overflow-x:auto;font-family:system-ui,sans-serif;margin-top:16px}table{border-collapse:collapse;width:100%;font-size:13px;background:var(--card)}th,td{border:1px solid var(--line);padding:8px;text-align:left;white-space:nowrap}th{background:var(--pri);color:#fff}
+td button{border:0;border-radius:8px;padding:5px 9px;margin-right:4px;cursor:pointer;background:var(--pri);color:#fff}td button.d{background:#c0392b}
+.pic{width:110px;height:110px;border-radius:50%;border:2px dashed var(--pri);display:grid;place-items:center;font-size:34px;margin:0 auto;cursor:pointer;background-size:cover;background-position:center}.pic.has{color:transparent;border-style:solid}
+.stat.tap{cursor:pointer;border-left-color:var(--acc)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:grid;place-items:center;z-index:9;padding:20px}.dlg{background:var(--card);border-radius:16px;padding:20px;width:100%;max-width:340px;display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:system-ui,sans-serif}.dlg p{grid-column:1/3;margin:0 0 6px}.d2{background:#c0392b}
+.row{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:10px;font-family:system-ui,sans-serif}
+.ipic{width:64px;height:64px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;overflow:hidden;flex:none}
+.mid{flex:1;min-width:0;display:grid;gap:2px}.mid span{color:var(--mut);font-size:13px}
+.rt{text-align:right;display:grid;gap:8px;justify-items:end}
+.plus{width:38px;height:38px;border-radius:50%;border:0;background:var(--pri);color:#fff;font-size:22px;cursor:pointer;line-height:1}.plus.d{background:#c0392b;font-size:16px}
+.dlg input{grid-column:1/3;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+.step{display:flex;align-items:center;gap:6px}.step button{width:28px;height:28px;border-radius:50%;border:0;background:var(--pri);color:#fff;cursor:pointer;padding:0;margin:0;font-size:16px}.step b{min-width:20px;text-align:center}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:10px}.cnt{border:2px solid var(--pri);border-radius:12px;padding:6px 12px;text-align:center;font-family:system-ui,sans-serif;line-height:1.1}.cnt b{display:block;font-size:20px;color:var(--pri)}.cnt span{font-size:11px;color:var(--mut)}
+.sum{display:grid;gap:10px;margin-top:14px;font-family:system-ui,sans-serif}.sum label{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px}.sum input{width:110px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);text-align:right}
+.gr{display:flex;justify-content:space-between;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line)}.gt{background:var(--pri);color:#fff;font-size:18px}
+.lg{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:10px;border:0;border-radius:10px;background:var(--pri);color:#fff;font-size:16px;cursor:pointer}.lg[hidden]{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:20px;font-family:system-ui,sans-serif;font-size:14px;z-index:20}
+.ed{margin-left:10px;font-size:13px;padding:0;text-decoration:underline}
+.mi{display:block;width:100%;text-align:left;padding:13px 4px;border:0;border-bottom:1px solid var(--line);background:none;font-size:16px;cursor:pointer}.mi:disabled{opacity:.35;cursor:not-allowed}
+.item.fold{cursor:pointer;text-align:center;color:inherit;font-size:14px}
+.dr2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0;font-family:system-ui,sans-serif}.dr2 label{display:grid;gap:4px;font-size:13px;color:var(--mut)}.dr2 input{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-width:0}.dr2 .big{grid-column:1/3;padding:12px}
+.th{display:block;margin-top:4px;font-size:12px;padding:3px;border-radius:6px;border:0;min-width:90px;max-width:150px;background:var(--bg);color:var(--ink)}
+.upl{display:block;text-align:center;cursor:pointer;font-family:system-ui,sans-serif;padding:14px;border-radius:14px}
+.fxc .pic{margin:0 auto}.fx{display:flex;gap:8px;align-items:center}.fxc{flex:1;display:grid;gap:12px;min-width:0}.chk{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--mut);white-space:nowrap;font-family:system-ui,sans-serif;cursor:pointer}.chk input{width:18px;height:18px;padding:0;margin:0}
+.dsc{background:#c0392b;color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700}.old{font-size:12px;color:var(--mut)}.free{color:#c0392b!important;font-weight:700}.blink{animation:blink 1s steps(2,start) infinite}@keyframes blink{50%{opacity:.2}}
+.tabs{display:flex;gap:6px;margin:8px 0 12px;font-family:system-ui,sans-serif}.tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-size:13px}.tab.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+tr.off td:not(:last-child){opacity:.4}td input[type=checkbox]{width:18px;height:18px;margin:0}
+.btnline{display:flex;gap:10px;margin-bottom:6px}.btnline>*{flex:1;margin:0;padding:12px 6px;font-size:15px;text-align:center}
+.heart{background:none;border:0;padding:0 2px;cursor:pointer;font-size:16px;vertical-align:middle;line-height:1}.heart.sm{font-size:13px}
+</style></head><body>
+<div id="app">
+<header><h1>Home Shopping</h1><button class="burger" id="bg" aria-label="Menu"><i></i><i></i><i></i></button></header>
+<div class="dots" id="dots"></div>
+<main id="main"></main>
+<nav id="nav" hidden></nav>
+<aside class="drawer" id="dr"></aside>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const S={role:null,tab:'home',taps:[0,0,0],shown:[false,false,false],customer:null,rider:null,superOK:false,admins:[{id:1,u:'admin',p:'1234',pf:null}],nid:2,riders:[],rid:1,cur:null,sv:'dash',editId:null,editLoc:null,del:null,vp:null,tmp:{},msg:''};
+const ROLES=[{n:'Delivery Boy',k:'rider'},{n:'Admin',k:'admin'},{n:'Super Admin',k:'sadmin'}];
+const ITEMS=[['🍎','Apples','Rs 320/kg'],['🥛','Milk','Rs 260/L'],['🍞','Bread','Rs 120'],['🥚','Eggs','Rs 340/dz'],['🍚','Rice','Rs 450/kg'],['🧴','Soap','Rs 90'],['🍅','Tomato','Rs 140/kg'],['🫒','Cooking oil','Rs 620/L']];
+S.items=[{id:1,name:'Apples',shop:'Fresh Mart',district:'Faisalabad',city:'Faisalabad',price:320,status:'Available',cat:'Fruits',discId:1,em:'🍎',adm:'admin'},{id:2,name:'Milk',shop:'Fresh Mart',district:'Faisalabad',city:'Faisalabad',price:260,status:'Available',cat:'Dairy',freeId:1,em:'🥛',adm:'admin'},{id:3,name:'Rice',shop:'Al-Madina Store',district:'Jhang',city:'Jhang',price:450,status:'Available',cat:'Grains',em:'🍚',adm:'admin'}];S.iid=4;S.bill=[];S.customers=[];S.cid=1;S.cats=['Fruits','Dairy','Bakery','Grains','Groceries','Household'].map((n,i)=>({id:i+1,name:n}));S.catid=7;S.rates=[['Delivery charges per km',20],['Tax',50],['POS fee',10]].map((x,i)=>({id:i+1,name:x[0],val:x[1]}));S.rateid=4;S.favI=[];S.favS=[];S.favSel='items';S.shops=[{id:1,name:'Fresh Mart',adm:'admin',district:'Faisalabad',city:'Faisalabad'},{id:2,name:'Al-Madina Store',adm:'admin',district:'Jhang',city:'Jhang'}];S.shopid=3;S.cities=[{id:1,name:'Chak 204 RB',district:'Faisalabad',adm:'admin'}];S.cityid=2;S.dbill=[];S.inDemo=false;S.rt='rates';S.discs=[{id:1,name:'Eid Sale',val:10,itemId:1},{id:2,name:'Weekend Offer',val:20,itemId:3}];S.discid=3;S.frees=[{id:1,name:'Buy 1 Get 1 Free',itemId:2},{id:2,name:'Free 200ml Milk',itemId:3}];S.freeid=3;S.pays=['JazzCash','Easypaisa','Bank Transfer','Debit/Credit Card'].map((n,i)=>({id:i+1,name:n}));S.payid=5;S.fv={};S.statuses=['Available','Sold','Coming soon'].map((n,i)=>({id:i+1,name:n}));S.stid=4;S.editCat=null;S.editItem=null;S.addOpen=false;S.spPass='1234';S.sf='';S.from='';S.to='';S.q='';S.q2='';S.cf={};
+S.sales=(()=>{const P=[['Faisalabad','Faisalabad','admin'],['Faisalabad','Jaranwala','admin'],['Lahore','Lahore','Fresh Corner'],['Jhang','Jhang','Al-Madina'],['Multan','Multan','Fresh Corner'],['Rawalpindi','Taxila','Al-Madina']],R=['Ali','Usman','Bilal'],C=['Akmal','Hamza','Sana','Bilal K','Ayesha'],ST=['Delivered','Delivered','Processing','Cancelled','Delivered'],I=[['Apples','Fruits'],['Milk','Dairy'],['Bread','Bakery'],['Rice','Grains'],['Cooking oil','Groceries'],['Soap','Household'],['Eggs','Dairy']],o=[];
+ for(let i=0;i<48;i++){const d=new Date(Date.now()-(i*5%60)*864e5),m=d.getMonth()+1,dd=d.getDate(),p=P[(i*7)%6];o.push({date:`${d.getFullYear()}-${String(m).padStart(2,'0')}-${String(dd).padStart(2,'0')}`,district:p[0],city:p[1],adm:p[2],rider:R[(i*5)%3],id:i+1,cust:C[i%5],status:ST[i%5],pay:i%7<3?'Online':'Cash',acct:['JazzCash','Easypaisa','Bank Transfer','Debit/Credit Card'][i%4],item:I[(i*3)%7][0],cat:I[(i*3)%7][1],amt:500+(i*373)%4500})}return o})();S.pick=null;S.shop='';S.myCity=null;S.tax=0;S.pos=0;S.disc=0;S.dist=null;let BG={g:0,r:0,a:0};
+const $=id=>document.getElementById(id),main=$('main'),nav=$('nav');
+function dots(){$('dots').style.display=S.role?'none':'flex';$('dots').innerHTML=[0,1,2].map(i=>`<button class="dot" data-i="${i}" aria-label="dot ${i+1}"></button>`).join('')}
+$('dots').onclick=e=>{const i=e.target.dataset.i;if(i===undefined)return;
+ S.taps=S.taps.map((t,j)=>j==i?t+1:0);if(S.taps[i]>=9){S.shown[i]=true}render()};
+$('bg').onclick=()=>{buildDrawer();$('dr').classList.add('open')};
+function go(role){S.role=role;S.tab=role==='customer'?'home':'profile';S.msg='';render()}
+function tabs(){
+ if(S.role==='customer')return[['home','🏠','Home'],['fav','❤️','Favorite'],['bill','🧾','Bill',!S.customer],['notif','🔔','Alerts',!S.customer],['profile','👤','Profile']];
+ if(S.role==='rider')return[['profile','👤','Profile'],['req','📦','Requests',!S.rider],['notif','🔔','Alerts',!S.rider]];
+ if(S.role==='sadmin'&&S.superOK&&S.sv==='demo')return[['home','🏠','Home'],['bill','🧾','Bill'],['notif','🔔','Alerts']];
+ if(S.role==='admin'&&S.cur)return[['profile','👤','Profile'],['req','📦','Requests',!S.cur.pf],['notif','🔔','Alerts',!S.cur.pf],['inv','🗂','Inventory',!S.cur.pf]];
+ return null}
+function back(){return `<button class="link" onclick="S.role=null;S.cur=null;S.sv='dash';S.msg='';S.editLoc=null;render()">← Back</button>`}
+function profile(k){const p=S[k];
+ if(p)return `<h2>Profile</h2><div class="msg">${p.name}<br>${p.phone}</div>`;
+ return `<h2>Create profile</h2><div class="form"><input id="pn" placeholder="Full name"><input id="pp" placeholder="Phone number" inputmode="tel"><button class="big" onclick="reg('${k}')">Register</button></div><p class="hint">${k==='customer'?'Bill aur notifications register karne ke baad khulenge.':'Requests aur notifications profile banne ke baad khulenge.'}</p>`}
+function reg(k){const n=$('pn').value.trim(),p=$('pp').value.trim();if(!n||!p){S.msg='Name aur phone likhein.';return alert(S.msg)}S[k]={name:n,phone:p};render()}
+function login(kind){return `${back()}<h2>${kind==='sadmin'?'Super Admin':'Admin'} login</h2><div class="form"><input id="lu" placeholder="Username" autocapitalize="off"><input id="lp" type="password" placeholder="Password"><button class="big" onclick="doLogin('${kind}')">Login</button></div>${S.msg?`<p class="msg err">${S.msg}</p>`:''}${kind==='sadmin'?(S.spPass==='1234'?'<p class="hint">Demo: superadmin / 1234</p>':''):'<p class="hint">Admin sirf tab login kar sakta hai jab Super Admin usay register kare. Demo: admin / 1234</p>'}`}
+function doLogin(kind){const u=$('lu').value.trim(),p=$('lp').value;
+ if(kind==='sadmin'){if(u==='superadmin'&&p===S.spPass){S.superOK=true;S.msg=''}else S.msg='Wrong username or password.'}
+ else{const a=S.admins.find(a=>a.u===u&&a.p===p);if(a){S.fv={};S.myCity=null;S.cur=a;S.tab='profile';S.msg=''}else S.msg='Ye admin registered nahi hai. Super Admin se register karwayen.'}
+ render()}
+const PB={"Attock":["Attock","Hasan Abdal","Hazro","Fateh Jang","Jand","Pindi Gheb"],"Bahawalnagar":["Bahawalnagar","Chishtian","Haroonabad","Fort Abbas","Minchinabad"],"Bahawalpur":["Bahawalpur","Ahmadpur East","Hasilpur","Khairpur Tamewali","Yazman","Uch Sharif"],"Bhakkar":["Bhakkar","Darya Khan","Kallur Kot","Mankera"],"Chakwal":["Chakwal","Choa Saidan Shah","Kallar Kahar","Lawa"],"Chiniot":["Chiniot","Bhawana","Lalian"],"Dera Ghazi Khan":["Dera Ghazi Khan","Kot Chutta"],"Faisalabad":["Faisalabad","Jaranwala","Samundri","Tandlianwala","Chak Jhumra","Khurrianwala"],"Gujranwala":["Gujranwala","Kamoke","Nowshera Virkan","Qila Didar Singh"],"Gujrat":["Gujrat","Kharian","Sarai Alamgir","Jalalpur Jattan","Lala Musa"],"Hafizabad":["Hafizabad","Pindi Bhattian"],"Jhang":["Jhang","Shorkot","Ahmedpur Sial","Athara Hazari"],"Jhelum":["Jhelum","Dina","Sohawa","Pind Dadan Khan"],"Kasur":["Kasur","Chunian","Pattoki","Kot Radha Kishan"],"Khanewal":["Khanewal","Mian Channu","Kabirwala","Jahanian"],"Khushab":["Jauharabad","Khushab","Noorpur Thal","Quaidabad"],"Lahore":["Lahore","Raiwind","Lahore Cantt","Model Town"],"Layyah":["Layyah","Karor Lal Esan","Chaubara"],"Lodhran":["Lodhran","Kahror Pacca","Dunyapur"],"Mandi Bahauddin":["Mandi Bahauddin","Malakwal","Phalia"],"Mianwali":["Mianwali","Isa Khel","Piplan"],"Multan":["Multan","Shujabad","Jalalpur Pirwala"],"Muzaffargarh":["Muzaffargarh","Alipur","Jatoi"],"Nankana Sahib":["Nankana Sahib","Shahkot","Sangla Hill"],"Narowal":["Narowal","Shakargarh","Zafarwal"],"Okara":["Okara","Depalpur","Renala Khurd"],"Pakpattan":["Pakpattan","Arifwala"],"Rahim Yar Khan":["Rahim Yar Khan","Sadiqabad","Khanpur","Liaquatpur"],"Rajanpur":["Rajanpur","Jampur","Rojhan"],"Rawalpindi":["Rawalpindi","Taxila","Gujar Khan","Kahuta","Kallar Syedan","Kotli Sattian"],"Sahiwal":["Sahiwal","Chichawatni"],"Sargodha":["Sargodha","Bhalwal","Shahpur","Sillanwali","Kot Momin","Bhera"],"Sheikhupura":["Sheikhupura","Ferozewala","Muridke","Sharaqpur Sharif","Safdarabad"],"Sialkot":["Sialkot","Daska","Sambrial","Pasrur"],"Toba Tek Singh":["Toba Tek Singh","Gojra","Kamalia","Pir Mahal"],"Vehari":["Vehari","Burewala","Mailsi"],"Murree":["Murree","Bhurban"],"Taunsa":["Taunsa Sharif"],"Wazirabad":["Wazirabad","Alipur Chatha"],"Kot Addu":["Kot Addu","Chowk Sarwar Shaheed"],"Talagang":["Talagang"]};
+const citiesOf=d=>[...new Set([...(PB[d]||[]),...S.cities.filter(c=>c.district===d).map(c=>c.name)])];
+function dcSel(dId,cId,d,c){const ks=Object.keys(PB).sort(),dk=ks.find(k=>k.toLowerCase()===String(d||'').trim().toLowerCase())||'',ck=citiesOf(dk).find(k=>k.toLowerCase()===String(c||'').trim().toLowerCase())||'';
+ return `<select id="${dId}" class="sel" aria-label="District" onchange="fillC('${dId}','${cId}')"><option value="">Select district</option>${ks.map(x=>`<option ${x===dk?'selected':''}>${x}</option>`).join('')}</select><select id="${cId}" class="sel" aria-label="City"><option value="">Select city</option>${citiesOf(dk).map(x=>`<option ${x===ck?'selected':''}>${x}</option>`).join('')}</select>`}
+function fillC(dId,cId){$(cId).innerHTML='<option value="">Select city</option>'+citiesOf($(dId).value).map(x=>`<option>${x}</option>`).join('')}
+let MENU=[];
+function menuItems(){const r=S.role,out=[];
+ if(!r)return [['About Home Shopping'],['Help &amp; support'],['Terms &amp; privacy'],['Contact: 0300-0000000']];
+ const t=tabs();
+ if(t&&r!=='sadmin')t.forEach(x=>out.push([x[1]+' '+x[2],()=>{S.tab=x[0];S.msg='';S.editLoc=null},!!x[3]]));
+ else if(r==='sadmin'&&S.superOK)[['📊 Dashboard','dash'],['💰 Sales Reports','sales'],['⚙️ Setup','setup'],['🧾 Bill Demo','demo']].forEach(x=>out.push([x[0],()=>{S.sv=x[1];S.tab='home';S.vp=null;S.del=null;S.editId=null;S.msg=''}]));
+ out.push(['🔑 Login page',goLogin]);return out}
+function buildDrawer(){const n={customer:'Customer',rider:'Delivery Boy',admin:'Admin',sadmin:'Super Admin'};MENU=menuItems();
+ $('dr').innerHTML=`<h3>${S.role?n[S.role]+' menu':'Details'}</h3>${MENU.map((m,i)=>m[1]?`<button class="mi" ${m[2]?'disabled':''} onclick="mn(${i})">${m[0]}</button>`:`<p>${m[0]}</p>`).join('')}<button class="link" onclick="closeDr()">Close</button>`}
+function mn(i){MENU[i][1]();closeDr();render()}
+function closeDr(){$('dr').classList.remove('open')}
+document.addEventListener('click',e=>{const d=$('dr');if(d.classList.contains('open')&&!d.contains(e.target)&&!$('bg').contains(e.target))closeDr()});
+function goLogin(){S.fv={};S.myCity=null;S.editLoc=null;S.role=null;S.cur=null;S.sv='dash';S.vp=null;S.del=null;S.msg='';$('dr').classList.remove('open');render()}
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
+function locForm(pf){if(!S.editLoc)return '';return `<div class="form" style="margin-top:12px">${dcSel('ld','lc',pf.district,pf.city)}<button class="big alt" onclick="saveLoc()">Update district &amp; city</button><button class="link" onclick="S.editLoc=null;render()">Cancel</button></div>`}
+function saveLoc(){const pf=S.role==='customer'?S.customer.pf:S.role==='rider'?S.rider.pf:S.cur.pf,d=$('ld').value.trim(),c=$('lc').value.trim();if(!d||!c)return toast('District aur city dono likhein.');pf.district=d;pf.city=c;S.editLoc=null;render();toast('District aur city update ho gaye.')}
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TP={};
+const L=()=>({riders:S.riders,customers:S.customers,cats:S.cats,rates:S.rates,disc:S.discs,free:S.frees,pays:S.pays,shops:S.shops,cities:S.cities,stat:S.statuses,items:S.items}[K()]||S.admins);
+function dlg(){return S.del===null?'':`<div class="ov"><div class="dlg"><p>Kya aap <b>${esc((x=>x.u||x.name)(L().find(a=>a.id===S.del)||{}))}</b> ko delete karna chahte hain?</p><button class="big alt" onclick="S.del=null;render()">No</button><button class="big d2" onclick="delAdmin(S.del)">Yes</button></div></div>`}
+function profCard(f,ed){const eb=k=>ed?`<button class="link ed" onclick="S.editLoc='${k}';render()">Edit</button>`:'';return `<div class="item"><div class="em">${f.pic?`<img src="${f.pic}" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover">`:'👤'}</div><b>${esc(f.name)}</b><span>Mobile: ${esc(f.mobile)}<br>District: ${esc(f.district)}${eb('d')}<br>City: ${esc(f.city)}${eb('c')}<br>Location: ${esc(f.loc||'—')}<br>Address: ${esc(f.address)}</span>${f.voice?`<br><audio controls src="${f.voice}" style="width:100%;margin-top:8px"></audio>`:''}</div>`}
+const td=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`};
+const SF={summary:{t:'Sales summary',h:'Date',k:o=>o.date,desc:1},district:{t:'District wise sales',h:'District',k:o=>o.district},city:{t:'City wise sales',h:'City',k:o=>o.city},admin:{t:'Admin wise sale',h:'Admin',k:o=>o.adm},rider:{t:'Delivery boy wise sale',h:'Delivery boy',k:o=>o.rider},category:{t:'Category Wise Sales',h:['Date','Category'],k:o=>[o.date,o.cat],desc:1,q:'cat',ql:'Category list'},item:{t:'Item Wise Sales',h:['Date','Item','Category'],k:o=>[o.date,o.item,o.cat],desc:1,q:'cat',ql:'Category list',q2:'item',ql2:'Items list'}};
+function salesView(){
+ if(S.sv==='sales')return `<h2>Sales Reports</h2><div class="grid">${Object.keys(SF).map(k=>`<button class="item fold" onclick="S.sv='sale';S.sf='${k}';S.from=td();S.to=td();S.q='';S.q2='';render()"><div class="em">📁</div><b>${SF[k].t}</b></button>`).join('')}</div>`;
+ const f=SF[S.sf],qq=S.q.trim().toLowerCase(),g={},fm=n=>n.toLocaleString('en-US'),H=[].concat(f.h);
+ const list=S.sales.filter(o=>(!S.from||o.date>=S.from)&&(!S.to||o.date<=S.to)&&(!f.q||!qq||String(o[f.q]).toLowerCase().includes(qq))&&(!f.q2||!S.q2.trim()||String(o[f.q2]).toLowerCase().includes(S.q2.trim().toLowerCase())));
+ list.forEach(o=>{const p=[].concat(f.k(o)),k=p.join('|');(g[k]=g[k]||{p,n:0,a:0});g[k].n++;g[k].a+=o.amt});
+ const rows=Object.entries(g).sort((a,b)=>f.desc?(a[0]<b[0]?1:-1):b[1].a-a[1].a),tn=list.length,ta=list.reduce((x,o)=>x+o.amt,0);
+ const names=f.q==='item'?[...new Set([...S.items.map(i=>i.name),...S.sales.map(o=>o.item)])].sort():f.q==='cat'?[...new Set([...S.cats.map(c=>c.name),...S.sales.map(o=>o.cat)])].sort():[];
+ return `<button class="link" onclick="S.sv='sales';render()">← Folders</button><h2>${f.t}</h2>
+ <div class="dr2"><label>From date<input type="date" id="df" value="${S.from}"></label><label>To date<input type="date" id="dt" value="${S.to}"></label>${f.q?`<label style="grid-column:1/3">${f.ql}<input id="sq" list="dl" placeholder="Select or type to search" value="${esc(S.q)}" autocomplete="off"><datalist id="dl">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist></label>`:''}${f.q2?`<label style="grid-column:1/3">${f.ql2}<input id="sq2" list="dl2" placeholder="Select or type to search" value="${esc(S.q2)}" autocomplete="off"><datalist id="dl2">${(f.q2==='item'?[...new Set([...S.items.map(i=>i.name),...S.sales.map(o=>o.item)])]:[...new Set([...S.cats.map(c=>c.name),...S.sales.map(o=>o.cat)])]).sort().map(n=>`<option value="${esc(n)}">`).join('')}</datalist></label>`:''}<button class="big" onclick="searchSales()">Search</button></div>
+ <div class="tw"><table><tr>${H.map(x=>`<th>${x}</th>`).join('')}<th>Orders</th><th>Sales (Rs)</th></tr>${rows.map(r=>`<tr>${r[1].p.map(x=>`<td>${esc(x)}</td>`).join('')}<td>${r[1].n}</td><td>${fm(r[1].a)}</td></tr>`).join('')||`<tr><td colspan="${H.length+2}">Is search mein koi sale nahi.</td></tr>`}<tr><th colspan="${H.length}">Total</th><th>${tn}</th><th>${fm(ta)}</th></tr></table></div>`}
+function searchSales(){const a=$('df').value,b=$('dt').value;if(a&&b&&a>b)return toast('From date, To date se pehle honi chahiye.');S.from=a;S.to=b;S.q=$('sq')?$('sq').value:'';S.q2=$('sq2')?$('sq2').value:'';render()}
+const CL={cats:{t:'Item Category List',ph:'Category name',h:'Category',a:'cats',i:'catid'},rates:{v:1,t:'Fix Rates List',ph:'Rate name',h:'Rate',a:'rates',i:'rateid'},pays:{t:'Payment method',ph:'Payment method name',h:'Payment method',a:'pays',i:'payid'},disc:{it:1,v:1,pct:1,t:'Discount offer',ph:'Offer name (e.g. Eid Sale)',h:'Offer',vl:'Discount (%)',vp:'%',a:'discs',i:'discid'},free:{it:1,t:'Free item',ph:'Free item offer (e.g. Buy 1 Get 1 Free)',h:'Free item',a:'frees',i:'freeid'},stat:{t:'Item Status List',ph:'Status name',h:'Status',a:'statuses',i:'stid'}};
+const NW={cats:'Add New Category',rates:'Add New Rate',disc:'Add New Discount Offer',free:'Add New Free Item',pays:'Add New Payment Method',stat:'Add New Status'};
+const K=()=>S.sv==='rates'?S.rt:S.sv;
+const SETUP=[['admins','Admin List'],['riders','Delivery Boy List'],['customers','Customers List'],['cats','Item Category List'],['items','Items List'],['shops','Mart/Shop'],['cities','City List'],['stat','Item Status List'],['rates','Fix Rates List'],['pays','Payment method'],['pass','Super Admin Password']];
+function setupView(){return `<h2>Setup</h2><div class="grid">${SETUP.map(x=>`<button class="item fold" onclick="S.sv='${x[0]}';S.rt='rates';S.editCat=null;S.editItem=null;S.addOpen=false;S.vp=null;S.del=null;S.editId=null;S.msg='';render()"><div class="em">📁</div><b>${x[1]}</b></button>`).join('')}</div>`}
+function listView(){const bk=`<button class="link" onclick="S.sv='setup';S.editCat=null;S.editItem=null;S.addOpen=false;S.vp=null;S.del=null;render()">← Setup</button>`,del=a=>`<button class="d" onclick="S.del=${a.id};render()">Delete</button>`,T=(h,r,c)=>`<div class="tw"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r||`<tr><td colspan=${h.length}>${c}</td></tr>`}</table></div>${dlg()}`;
+ if(S.sv==='cities'){const e=S.cities.find(x=>x.id===S.editCat);return bk+'<h2>City List</h2>'+((S.addOpen||e)?`<div class="form"><input id="cy" placeholder="City name" value="${esc(e&&e.name)}"><select id="cd" class="sel" aria-label="District"><option value="">Select district</option>${Object.keys(PB).sort().map(k=>`<option ${e&&e.district===k?'selected':''}>${k}</option>`).join('')}</select><select id="ca" class="sel" aria-label="Admin" onchange="cityAdm()"><option value="">Select admin</option>${S.admins.map(a=>`<option ${e&&e.adm===a.u?'selected':''}>${esc(a.u)}</option>`).join('')}</select><button class="big" onclick="saveCity()">${e?'Update':'Save'}</button><button class="link" onclick="S.editCat=null;S.addOpen=false;render()">Cancel</button></div>`:`<button class="big" onclick="S.addOpen=true;render()">Add New City</button>`)+T(['ID','City','District','Admin','Action'],S.cities.map(a=>`<tr><td>${a.id}</td><td>${esc(a.name)}</td><td>${esc(a.district)}</td><td>${esc(a.adm)}</td><td><button onclick="S.editCat=${a.id};render()">Edit</button>${del(a)}</td></tr>`).join(''),'Abhi koi local city nahi.')}
+ if(S.sv==='shops'){const e=S.shops.find(x=>x.id===S.editCat);return bk+'<h2>Mart/Shop</h2>'+((S.addOpen||e)?`<div class="form"><input id="mn" placeholder="Mart / shop name" value="${esc(e&&e.name)}"><select id="ma" class="sel" aria-label="Admin" onchange="shopAdm()"><option value="">Select admin</option>${S.admins.map(a=>`<option ${e&&e.adm===a.u?'selected':''}>${esc(a.u)}</option>`).join('')}</select>${dcSel('md','mc',e&&e.district,e&&e.city)}<button class="big" onclick="saveShop()">${e?'Update':'Save'}</button><button class="link" onclick="S.editCat=null;S.addOpen=false;render()">Cancel</button></div>`:`<button class="big" onclick="S.addOpen=true;render()">Add New Mart/Shop</button>`)+T(['ID','Mart/Shop','Admin','District','City','Action'],S.shops.map(a=>`<tr><td>${a.id}</td><td>${esc(a.name)}</td><td>${esc(a.adm)}</td><td>${esc(a.district)}</td><td>${esc(a.city)}</td><td><button onclick="S.editCat=${a.id};render()">Edit</button>${del(a)}</td></tr>`).join(''),'Abhi koi mart/shop nahi.')}
+ if(S.sv==='customers')return bk+'<h2>Customers List</h2>'+T(['ID','Name','District','City','Action'],S.customers.map(a=>`<tr><td>${a.id}</td><td>${esc(a.u)}</td><td>${esc(a.pf.district)}</td><td>${esc(a.pf.city)}</td><td>${del(a)}<button onclick="S.vp=${a.id};render()">View profile</button></td></tr>`).join(''),'Abhi koi customer nahi.');
+ if(CL[S.sv]){const c=CL[K()],arr=S[c.a],e=arr.find(x=>x.id===S.editCat);return bk+`<h2>${S.sv==='rates'?'Fix Rates List':c.t}</h2>${S.sv==='rates'?`<div class="tabs">${[['rates','Fix Rates'],['disc','Discount offer'],['free','Free item']].map(t=>`<button class="tab ${S.rt===t[0]?'on':''}" onclick="S.rt='${t[0]}';S.editCat=null;S.addOpen=false;render()">${t[1]}</button>`).join('')}</div>`:''}${(S.addOpen||e)?`<div class="form"><input id="cn" placeholder="${c.ph}" value="${esc(e&&e.name)}">${c.v?`<input id="cv" type="number" min="0" step="any" inputmode="decimal" placeholder="${c.vp||'Rs'}" aria-label="${c.vl||'Rate in Rs'}" value="${e?e.val:''}">`:''}${c.it?`<input id="ci" list="dli" placeholder="Items list: select or type item" autocomplete="off" value="${esc(e?itemLblId(e.itemId):'')}"><datalist id="dli">${S.items.map(i=>`<option value="${esc(itemLbl(i))}">`).join('')}</datalist>`:''}<button class="big" onclick="saveCat()">${e?'Update':'Save'}</button><button class="link" onclick="S.editCat=null;S.addOpen=false;render()">Cancel</button></div>`:`<button class="big" onclick="S.addOpen=true;render()">${NW[K()]}</button>`}`+T((S.sv==='rates'?['Enable']:[]).concat(['ID',c.h],c.it?['Item']:[],c.v?[c.vl||'Rate (Rs)']:[],['Action']),arr.map(a=>`<tr class="${S.sv==='rates'&&a.on===false?'off':''}">${S.sv==='rates'?`<td><input type="checkbox" aria-label="Enable ${esc(a.name)}" ${a.on!==false?'checked':''} onchange="tgl(${a.id},this.checked)"></td>`:''}<td>${a.id}</td><td>${esc(a.name)}</td>${c.it?`<td>${esc(itemName(a.itemId))}</td>`:''}${c.v?`<td>${a.val}</td>`:''}<td><button ${S.sv==='rates'&&a.on===false?'disabled style="opacity:.4"':''} onclick="S.editCat=${a.id};render()">Edit</button>${del(a)}</td></tr>`).join(''),'Abhi koi entry nahi.')}
+ if(S.sv==='pass')return bk+`<h2>Super Admin Password</h2><div class="form"><input id="p0" type="password" placeholder="Current password"><input id="p1" type="password" placeholder="New password"><input id="p2" type="password" placeholder="Confirm new password"><button class="big" onclick="savePass()">Save</button></div>`;
+ return (S.tmp={},bk)+'<h2>Items List</h2>'+impMsg()+(editForm()||addItemForm())+T(['ID','Item','Category','Shop','District','City','Price','Status','Action'],S.items.map(a=>`<tr><td>${a.id}</td><td>${esc(a.name)}</td><td>${esc(a.cat||'—')}</td><td>${esc(a.shop)}</td><td>${esc(a.district)}</td><td>${esc(a.city)}</td><td>${a.price}</td><td>${esc(a.status)}</td><td><button onclick="S.editItem=${a.id};render()">Edit</button>${del(a)}</td></tr>`).join(''),'Abhi koi item nahi.')}
+function editForm(){const a=S.items.find(x=>x.id===S.editItem);if(!a)return '';return `<div class="form" style="margin-bottom:12px"><label class="pic ${a.pic?'has':''}" id="pic" style="${a.pic?`background-image:url(${a.pic})`:''}">${a.pic?'':(a.em||'📷')}<input type="file" accept="image/*" hidden onchange="pickPic(this)"></label><input id="en" value="${esc(a.name)}" placeholder="Item name">${catSel('ecat',a.cat)}<input id="es" value="${esc(a.shop)}" placeholder="Mart / shop name">${dcSel('ed','ec',a.district,a.city)}<input id="ep" value="${a.price}" placeholder="Price (Rs)" inputmode="decimal">${stSel('est',a.status)}<button class="big" onclick="saveEdit()">Update</button><button class="link" onclick="S.editItem=null;render()">Cancel</button></div>`}
+function fxw(k,h){return `<div class="fx"><div class="fxc">${h}</div><label class="chk"><input type="checkbox" id="fx_${k}" ${S.fv[k]?'checked':''}>Fix</label></div>`}
+function fxv(k,i,d){const v=S.fv[k];return v?v[i]:d}
+function fxSave(spec){spec.forEach(x=>{const c=$('fx_'+x[0]);if(c&&c.checked)S.fv[x[0]]=x[1].map(i=>i==='#pic'?(S.tmp.pic||''):$(i).value);else delete S.fv[x[0]]})}
+const FXH='<p class="hint" style="margin:0">Jis box ke saath "Fix" par tick lagayenge, Save ke baad wo box khali nahi hoga.</p>';
+const itemLbl=i=>`${i.name} | ${i.shop} | ${i.city}`,itemLblId=id=>{const i=S.items.find(x=>x.id===id);return i?itemLbl(i):''},itemName=id=>{const i=S.items.find(x=>x.id===id);return i?`${i.name} (${i.shop})`:'(item nahi mila)'};
+const offD=i=>S.discs.find(x=>x.itemId===i.id&&x.on!==false),offF=i=>S.frees.find(x=>x.itemId===i.id&&x.on!==false),eff=i=>{const d=offD(i);return d?Math.round(i.price*(100-d.val))/100:i.price};
+function offSel(id,v){return `<select id="${id}" class="sel" aria-label="Discount offer"><option value="">No discount offer</option>${S.discs.filter(x=>x.on!==false||x.id===v).map(x=>`<option value="${x.id}" ${x.id===v?'selected':''}>${esc(x.name)} (${x.val}%)</option>`).join('')}</select>`}
+function frSel(id,v){return `<select id="${id}" class="sel" aria-label="Free item"><option value="">No free item</option>${S.frees.filter(x=>x.on!==false||x.id===v).map(x=>`<option value="${x.id}" ${x.id===v?'selected':''}>${esc(x.name)}</option>`).join('')}</select>`}
+function stSel(id,v){return `<select id="${id}" class="sel" aria-label="Status">${S.statuses.map(x=>`<option ${x.name===v?'selected':''}>${esc(x.name)}</option>`).join('')}</select>`}
+function catSel(id,v){return `<select id="${id}" class="sel" aria-label="Category"><option value="">Select category</option>${S.cats.map(x=>`<option ${x.name===v?'selected':''}>${esc(x.name)}</option>`).join('')}</select>`}
+function impMsg(){const m=S.imp;S.imp=null;return m?`<div class="msg" style="margin-bottom:12px">${m}</div>`:''}
+function importXl(inp){const f=inp.files[0];if(!f)return;if(typeof XLSX==='undefined'){inp.value='';return toast('Excel reader load nahi hua. Internet check karke dobara try karein.')}
+ const r=new FileReader();r.onload=()=>{try{const wb=XLSX.read(r.result,{type:'array'}),rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+  let ok=0;const bad=[],ks=Object.keys(PB),STS=S.statuses.map(x=>x.name);
+  rows.forEach((raw,n)=>{const o={};for(const k in raw)o[String(k).trim().toLowerCase()]=String(raw[k]).trim();
+   const name=o['item']||o['item name']||o['name'],shop=o['shop']||o['mart']||o['mart/shop name']||o['shop name'],pr=parseFloat(o['price']||o['price (rs)']),
+    adm=S.admins.find(a=>a.u.toLowerCase()===(o['admin']||'').toLowerCase()),dk=ks.find(k=>k.toLowerCase()===(o['district']||'').toLowerCase()),ck=dk&&citiesOf(dk).find(c=>c.toLowerCase()===(o['city']||'').toLowerCase()),
+    st=STS.find(x=>x.toLowerCase()===(o['status']||'available').toLowerCase());
+   const cat=S.cats.find(c=>c.name.toLowerCase()===(o['category']||'').toLowerCase());
+   const why=!name?'item name nahi':!shop?'shop nahi':!(pr>=0)?'price galat':!adm?'admin nahi mila':!dk?'district galat':!ck?'city galat':!st?'status galat':(o['category']&&!cat)?'category galat':'';
+   if(why){bad.push(`Row ${n+2}: ${why}`);return}
+   S.items.push({id:S.iid++,name,shop,district:dk,city:ck,price:pr,status:st,cat:cat?cat.name:'',picFile:(o['picture']||o['image']||o['photo']||'').toLowerCase(),adm:adm.u});ok++});
+  S.imp=`<b>${ok}</b> items add ho gayi, <b>${bad.length}</b> rows skip hui.${bad.length?'<br>'+bad.slice(0,5).map(esc).join('<br>')+(bad.length>5?'<br>...':''):''}${ok?'<br>Picture baad mein Edit se lagayen.':''}`}catch(e){S.imp='File parh nahi saka. Excel (.xlsx) ya .csv file chunein.'}render()};r.readAsArrayBuffer(f)}
+function shrink(url){return new Promise(res=>{const im=new Image();im.onload=()=>{const k=Math.min(1,400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=()=>res(null);im.src=url})}
+function readUrl(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>res(null);r.readAsDataURL(f)})}
+async function importPics(inp){const files=[...inp.files];inp.value='';if(!files.length)return;let ok=0;const miss=[];
+ for(const f of files){const key=f.name.toLowerCase(),base=key.replace(/\.[^.]+$/,''),m=S.items.filter(i=>i.picFile?(i.picFile===key||i.picFile===base):i.name.toLowerCase()===base);
+  if(!m.length){miss.push(f.name);continue}
+  const u=await readUrl(f),d=u&&await shrink(u);if(!d){miss.push(f.name);continue}m.forEach(i=>{i.pic=d;ok++})}
+ S.imp=`<b>${ok}</b> items ki picture lag gayi, <b>${miss.length}</b> files match nahi hui.${miss.length?'<br>'+miss.slice(0,5).map(esc).join('<br>')+(miss.length>5?'<br>...':''):''}`;render()}
+function addItemForm(){if(fxv('s_pic',0,''))S.tmp.pic=fxv('s_pic',0,'');return `<div class="btnline"><label class="big alt upl">📥 Upload Excel<input type="file" accept=".xlsx,.xls,.csv" hidden onchange="importXl(this)"></label><button class="big" onclick="S.addOpen=!S.addOpen;render()">Add New Item</button></div><p class="hint" style="margin:0 0 14px">Excel columns: Admin, Item, Category (optional), Shop, District, City, Price, Status</p>${S.addOpen?`<div class="form" style="margin-bottom:14px">${fxw('s_pic',`<label class="pic ${fxv('s_pic',0,'')?'has':''}" id="pic" style="${fxv('s_pic',0,'')?`background-image:url(${fxv('s_pic',0,'')})`:''}">📷<input type="file" accept="image/*" hidden onchange="pickPic(this)"></label>`)}<p class="hint" style="margin:-6px 0 0">Item picture (lazmi)</p>${FXH}${fxw('s_adm',`<select id="xa" class="sel" aria-label="Admin" onchange="adminPick()"><option value="">Select admin</option>${S.admins.map(a=>`<option ${a.u===fxv('s_adm',0,'')?'selected':''}>${esc(a.u)}</option>`).join('')}</select>`)}<input id="xn" placeholder="Item name">${fxw('s_cat',catSel('xcat',fxv('s_cat',0,'')))}${fxw('s_shop',`<input id="xs" placeholder="Mart / shop name" value="${esc(fxv('s_shop',0,''))}">`)}${fxw('s_dc',dcSel('xd','xc',fxv('s_dc',0,''),fxv('s_dc',1,'')))}${fxw('s_p',`<input id="xp" placeholder="Price (Rs)" inputmode="decimal" value="${esc(fxv('s_p',0,''))}">`)}${fxw('s_st',stSel('xst',fxv('s_st',0,'')))}<button class="big" onclick="saveNew()">Save item</button><button class="link" onclick="S.addOpen=false;render()">Cancel</button></div>`:''}`}
+function adminPick(){const a=S.admins.find(x=>x.u===$('xa').value);if(a&&a.pf){$('xd').value=a.pf.district;fillC('xd','xc');$('xc').value=a.pf.city;if(!$('xs').value&&a.shop)$('xs').value=a.shop}}
+function saveNew(){const g=id=>$(id).value.trim(),pr=parseFloat(g('xp'));if(!S.tmp.pic)return toast('Item ki picture lazmi hai.');if(!g('xa')||!g('xn')||!g('xcat')||!g('xs')||!g('xd')||!g('xc')||!(pr>=0))return toast('Admin, item name, shop, district, city aur price zaroori hain.');fxSave([['s_pic',['#pic']],['s_adm',['xa']],['s_cat',['xcat']],['s_shop',['xs']],['s_dc',['xd','xc']],['s_p',['xp']],['s_st',['xst']]]);S.items.push({id:S.iid++,name:g('xn'),shop:g('xs'),district:g('xd'),city:g('xc'),price:pr,status:g('xst'),cat:g('xcat'),pic:S.tmp.pic,adm:g('xa')});S.addOpen=Object.keys(S.fv).some(k=>k[0]==='s');render();toast('Item add ho gaya.')}
+function saveEdit(){const a=S.items.find(x=>x.id===S.editItem),g=id=>$(id).value.trim(),pr=parseFloat(g('ep'));if(!a)return;if(!g('en')||!g('es')||!g('ed')||!g('ec')||!g('ecat')||!(pr>=0))return toast('Item name, shop, district, city aur price zaroori hain.');Object.assign(a,{name:g('en'),shop:g('es'),district:g('ed'),city:g('ec'),price:pr,status:g('est'),cat:g('ecat')});if(S.tmp.pic)a.pic=S.tmp.pic;S.editItem=null;render();toast('Item update ho gaya.')}
+function savePass(){const a=$('p0').value,b=$('p1').value,c=$('p2').value;if(a!==S.spPass)return toast('Current password galat hai.');if(b.length<4)return toast('New password kam az kam 4 characters ka ho.');if(b!==c)return toast('New password aur confirm password match nahi karte.');S.spPass=b;render();toast('Password change ho gaya.')}
+function tgl(id,on){const a=S[CL[K()].a].find(x=>x.id===id);if(a){a.on=on;render()}}
+function cityAdm(){const a=S.admins.find(x=>x.u===$('ca').value);if(a&&a.pf&&!$('cd').value)$('cd').value=a.pf.district}
+function saveCity(){const g=id=>$(id).value.trim(),o={name:g('cy'),district:g('cd'),adm:g('ca')};if(!o.name||!o.district||!o.adm)return toast('City name, district aur admin zaroori hain.');
+ if(citiesOf(o.district).some(c=>c.toLowerCase()===o.name.toLowerCase()&&!(S.cities.find(x=>x.id===S.editCat)&&S.cities.find(x=>x.id===S.editCat).name.toLowerCase()===c.toLowerCase())))return toast('Ye city is district mein pehle se mojood hai.');
+ const e=S.cities.find(x=>x.id===S.editCat);if(e)Object.assign(e,o);else S.cities.push(Object.assign({id:S.cityid++},o));S.editCat=null;S.addOpen=false;render()}
+function shopAdm(){const a=S.admins.find(x=>x.u===$('ma').value);if(a&&a.pf){$('md').value=a.pf.district;fillC('md','mc');$('mc').value=a.pf.city}}
+function saveShop(){const g=id=>$(id).value.trim(),o={name:g('mn'),adm:g('ma'),district:g('md'),city:g('mc')};if(!o.name||!o.adm||!o.district||!o.city)return toast('Mart/shop name, admin, district aur city zaroori hain.');const e=S.shops.find(x=>x.id===S.editCat);if(e)Object.assign(e,o);else S.shops.push(Object.assign({id:S.shopid++},o));S.editCat=null;S.addOpen=false;render()}
+function saveCat(){const c=CL[K()],n=$('cn').value.trim(),v=c.v?parseFloat($('cv').value):0,it=c.it?S.items.find(i=>itemLbl(i)===$('ci').value.trim()):null;if(!n)return toast('Naam likhein.');if(c.v&&(!(v>=0)||(c.pct&&v>100)))return toast(c.pct?'Discount 0 se 100 ke beech likhein.':'Rs ki raqam likhna lazmi hai.');if(c.it&&!it)return toast('Items list mein se item chunein.');const arr=S[c.a],e=arr.find(x=>x.id===S.editCat),o={name:n};if(c.v)o.val=v;if(c.it)o.itemId=it.id;if(e)Object.assign(e,o);else arr.push(Object.assign({id:S[c.i]++},o));S.editCat=null;S.addOpen=false;render()}
+const DK=[['recv','Total Order Received',0],['deliv','Total Order Delivered',0],['cancel','Total Order Cancel',0],['proc','Total Order Processing',0],['cash','Total Cash Received',1],['online','Total Online Received',1]];
+const DF={recv:o=>1,deliv:o=>o.status==='Delivered',cancel:o=>o.status==='Cancelled',proc:o=>o.status==='Processing',cash:o=>o.pay==='Cash'&&o.status==='Delivered',online:o=>o.pay==='Online'&&o.status!=='Cancelled'};
+function openDc(k){S.sv='dcard';S.dk=k;S.from=td();S.to=td();S.q='';S.q2='';S.cf={};render()}
+function dashView(){const t=td(),fm=n=>n.toLocaleString('en-US');
+ return `${back()}<h2>Dashboard</h2><div class="stats">${DK.map(d=>{const l=S.sales.filter(o=>o.date===t&&DF[d[0]](o));return `<div class="stat tap" onclick="openDc('${d[0]}')"><b>${d[2]?'Rs '+fm(l.reduce((a,o)=>a+o.amt,0)):l.length}</b><span>${d[1]} · Today</span></div>`}).join('')}</div>`}
+function dcView(){const d=DK.find(x=>x[0]===S.dk),fm=n=>n.toLocaleString('en-US'),base=S.sales.filter(o=>DF[S.dk](o)&&(!S.from||o.date>=S.from)&&(!S.to||o.date<=S.to)).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:b.id-a.id),COLS=[['ID'],['Date'],['Customer','cust'],['City','city'],['Admin','adm'],['Delivery boy','rider'],['Status','status'],S.dk==='online'?['Account name','acct']:['Payment','pay'],['Amount (Rs)']],opts={};
+ COLS.forEach(c=>{if(c[1]){opts[c[1]]=[...new Set(base.map(o=>o[c[1]]))].sort();if(S.cf[c[1]]&&!opts[c[1]].includes(S.cf[c[1]]))delete S.cf[c[1]]}});
+ const list=base.filter(o=>Object.entries(S.cf).every(([k,v])=>!v||o[k]===v)),ta=list.reduce((a,o)=>a+o.amt,0);
+ return `<button class="link" onclick="S.sv='dash';render()">← Dashboard</button><h2>${d[1]}</h2>
+ <div class="dr2"><label>From date<input type="date" id="df" value="${S.from}"></label><label>To date<input type="date" id="dt" value="${S.to}"></label><button class="big" onclick="searchSales()">Search</button></div>
+ <div class="tw"><table><tr>${COLS.map(c=>`<th>${c[0]}${c[1]?`<select class="th" aria-label="Filter ${c[0]}" onchange="S.cf['${c[1]}']=this.value;render()"><option value="">All</option>${opts[c[1]].map(v=>`<option value="${esc(v)}" ${S.cf[c[1]]===v?'selected':''}>${esc(v)}</option>`).join('')}</select>`:''}</th>`).join('')}</tr>${list.map(o=>`<tr><td>${o.id}</td><td>${o.date}</td><td>${esc(o.cust)}</td><td>${esc(o.city)}</td><td>${esc(o.adm)}</td><td>${esc(o.rider)}</td><td>${o.status}</td><td>${S.dk==='online'?esc(o.acct):o.pay}</td><td>${fm(o.amt)}</td></tr>`).join('')||'<tr><td colspan=9>Is date range mein koi order nahi.</td></tr>'}<tr><th colspan="2">Total</th><th colspan="6">${list.length} orders</th><th>${fm(ta)}</th></tr></table></div>`}
+function sa(){
+ if(S.sv==='demo')return demoView();
+ if(S.sv==='sales'||S.sv==='sale')return (S.sv==='sales'?back():'')+salesView();
+ if(S.vp!==null){const a=L().find(x=>x.id===S.vp),f=a&&a.pf;
+  return `<button class="link" onclick="S.vp=null;render()">← Back</button><h2>Profile</h2>`+(f?`<div class="item"><div class="em">${f.pic?`<img src="${f.pic}" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover">`:'👤'}</div><b>${esc(f.name)}</b><span>Mobile: ${esc(f.mobile)}<br>District: ${esc(f.district)}${eb('d')}<br>City: ${esc(f.city)}${eb('c')}<br>Location: ${esc(f.loc||'—')}<br>Address: ${esc(f.address)}</span>${f.voice?`<br><audio controls src="${f.voice}" style="width:100%;margin-top:8px"></audio>`:''}</div>`:`<p class="msg">${esc(a?a.u:'')} ne abhi profile nahi bhari.</p>`)}
+ if(S.sv==='setup')return back()+setupView();
+ if(S.sv==='customers'||CL[S.sv]||S.sv==='shops'||S.sv==='cities'||S.sv==='items'||S.sv==='pass')return listView();
+ if(S.sv==='dash')return dashView();
+ if(S.sv==='dcard')return dcView();
+ if(S.sv==='riders')return `<button class="link" onclick="S.sv='setup';S.editCat=null;S.editItem=null;S.addOpen=false;S.vp=null;S.del=null;render()">← Setup</button><h2>Delivery Boy List</h2><div class="tw"><table><tr><th>ID</th><th>Name</th><th>Admin name</th><th>Action</th></tr>${S.riders.map(a=>`<tr><td>${a.id}</td><td>${esc(a.u)}</td><td>${esc(a.adm||'—')}</td><td><button class="d" onclick="S.del=${a.id};render()">Delete</button><button onclick="S.vp=${a.id};render()">View profile</button></td></tr>`).join('')||'<tr><td colspan=4>Abhi koi delivery boy nahi.</td></tr>'}</table></div>${dlg()}`;
+ const e=S.admins.find(a=>a.id===S.editId);
+ return `<button class="link" onclick="S.sv='setup';S.editId=null;S.vp=null;S.msg='';render()">← Setup</button><h2>Admin List</h2>
+ <div class="form"><input id="au" placeholder="Name" value="${esc(e?.u)}" autocapitalize="off"><input id="ap" placeholder="Password" value="${esc(e?.p)}"><button class="big" onclick="saveAdmin()">Save</button></div>${S.msg?`<p class="msg err">${S.msg}</p>`:''}
+ <div class="tw"><table><tr><th>ID</th><th>Name</th><th>Password</th><th>Action</th></tr>${S.admins.map(a=>`<tr><td>${a.id}</td><td>${esc(a.u)}</td><td>${esc(a.p)}</td><td><button onclick="S.editId=${a.id};S.msg='';render()">Edit</button><button class="d" onclick="S.del=${a.id};render()">Delete</button><button onclick="S.vp=${a.id};render()">View profile</button></td></tr>`).join('')}</table></div>${dlg()}`}
+function saveAdmin(){const u=$('au').value.trim(),p=$('ap').value.trim();
+ if(!u||!p){S.msg='Name aur password dono likhein.';return render()}
+ if(S.admins.some(a=>a.u===u&&a.id!==S.editId)){S.msg='Ye name pehle se maujood hai.';return render()}
+ if(S.sv==='riders')return `<button class="link" onclick="S.sv='setup';S.editCat=null;S.editItem=null;S.addOpen=false;S.vp=null;S.del=null;render()">← Setup</button><h2>Delivery Boy List</h2><div class="tw"><table><tr><th>ID</th><th>Name</th><th>Admin name</th><th>Action</th></tr>${S.riders.map(a=>`<tr><td>${a.id}</td><td>${esc(a.u)}</td><td>${esc(a.adm||'—')}</td><td><button class="d" onclick="S.del=${a.id};render()">Delete</button><button onclick="S.vp=${a.id};render()">View profile</button></td></tr>`).join('')||'<tr><td colspan=4>Abhi koi delivery boy nahi.</td></tr>'}</table></div>${dlg()}`;
+ const e=S.admins.find(a=>a.id===S.editId);
+ if(e){e.u=u;e.p=p}else S.admins.push({id:S.nid++,u,p,pf:null});
+ S.editId=null;S.msg='';render()}
+function delAdmin(id){S.del=null;const k=K(),f=a=>a.id!==id;if(k==='riders'){S.riders=S.riders.filter(f);if(S.rider&&S.rider.id===id)S.rider=null}else if(k==='customers'){S.customers=S.customers.filter(f);if(S.customer&&S.customer.id===id)S.customer=null}else if(CL[k])S[CL[k].a]=S[CL[k].a].filter(f);else if(k==='items')S.items=S.items.filter(f);else if(k==='shops')S.shops=S.shops.filter(f);else if(k==='cities')S.cities=S.cities.filter(f);else{S.admins=S.admins.filter(f);if(S.editId===id)S.editId=null}render()}
+function adminProfile(who='admin'){S.tmp={};const rd=who==='rider';return `<h2>Complete your profile</h2><div class="form">
+ <label class="pic" id="pic">📷<input type="file" accept="image/*" hidden onchange="pickPic(this)"></label>
+ <input id="fn" placeholder="Name" value="${who==='admin'?esc(S.cur.u):''}">${rd?`<select id="fadm" class="sel"><option value="">Select your admin</option>${S.admins.map(a=>`<option>${esc(a.u)}</option>`).join('')}</select>`:''}<input id="fm" placeholder="Mobile" inputmode="tel">${dcSel('fd','fc','','')}
+ <input id="fl" placeholder="Current location"><button class="big alt" onclick="getLoc()">Use my location</button>
+ <textarea id="fa" rows="3" placeholder="Complete address"></textarea>
+ <button class="big alt" id="rec" onclick="toggleRec()">🎙 Record your details by voice</button><audio id="aud" controls hidden></audio>
+ <button class="big" onclick="saveProf('${who}')">Save profile</button></div><p class="msg err" id="pe" hidden></p>`}
+function pickPic(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.tmp.pic=r.result;$('pic').style.backgroundImage=`url(${r.result})`;$('pic').classList.add('has')};r.readAsDataURL(f)}
+function getLoc(){if(!navigator.geolocation)return perr('Location is device mein available nahi.');navigator.geolocation.getCurrentPosition(p=>{$('fl').value=p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)},()=>perr('Location permission allow karein ya khud likh dein.'))}
+function perr(t){const e=$('pe');e.textContent=t;e.hidden=false}
+let mr=null,ch=[];
+async function toggleRec(){const b=$('rec');
+ if(mr&&mr.state==='recording'){mr.stop();return}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:true});ch=[];mr=new MediaRecorder(st);
+  mr.ondataavailable=e=>ch.push(e.data);
+  mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());const u=URL.createObjectURL(new Blob(ch,{type:mr.mimeType}));S.tmp.voice=u;const a=$('aud');a.src=u;a.hidden=false;b.textContent='🎙 Record again'};
+  mr.start();b.textContent='⏹ Stop recording'}catch(e){perr('Microphone allow karein, phir dobara try karein.')}}
+function saveProf(who){const g=id=>$(id).value.trim();const d={name:g('fn'),mobile:g('fm'),district:g('fd'),city:g('fc'),loc:g('fl'),address:g('fa'),pic:S.tmp.pic,voice:S.tmp.voice};
+ if(!d.name||!d.mobile||!d.district||!d.city||!d.address)return perr('Name, mobile, district, city aur complete address zaroori hain.');
+ if(who==='rider'){const r={id:S.rid++,u:d.name,adm:$('fadm').value,pf:d};S.riders.push(r);S.rider=r}else if(who==='customer'){S.customer={id:S.cid++,u:d.name,name:d.name,pf:d};S.customers.push(S.customer);S.msg=''}else S.cur.pf=d;render()}
+function pic(i){return i.pic?`<img src="${i.pic}" alt="" style="width:100%;height:100%;object-fit:cover">`:(i.em||'📦')}
+function itemRow(i,cust){const dsc=offD(i),fr=offF(i);return `<div class="row"><div class="ipic">${pic(i)}</div><div class="mid"><b>${esc(i.name)}${cust?` <button class="heart" aria-label="Favorite item" onclick="favItem(${i.id})">${S.favI.includes(i.id)?'❤️':'🤍'}</button>`:''}</b><span>${cust?`<button class="heart sm" aria-label="Favorite shop" onclick="favShop(${i.id})">${S.favS.includes(i.shop)?'❤️':'🤍'}</button> `:''}${esc(i.shop)}</span><span>${esc(i.district)}, ${esc(i.city)}</span><span>Status: ${esc(i.status)}</span>${fr?`<span class="free blink">🎁 ${esc(fr.name)}</span>`:''}</div><div class="rt">${dsc?`<span class="dsc blink">${dsc.val}% OFF</span><s class="old">Rs ${i.price}</s><b>Rs ${eff(i)}</b>`:`<b>Rs ${i.price}</b>`}${cust?ctl(i):`<button class="plus d" aria-label="Delete item" onclick="S.items=S.items.filter(x=>x.id!==${i.id});render()">✕</button>`}</div></div>`}
+function favItem(id){const k=S.favI.indexOf(id);k<0?S.favI.push(id):S.favI.splice(k,1);render()}
+function favShop(id){const i=S.items.find(x=>x.id===id);if(!i)return;const k=S.favS.indexOf(i.shop);k<0?S.favS.push(i.shop):S.favS.splice(k,1);render()}
+function viewShop(k){S.shop=S.favS[k];S.tab='home';render()}
+function favView(){const items=S.items.filter(i=>S.favI.includes(i.id));
+ const sel=`<select class="sel" style="width:100%;margin:6px 0 12px" aria-label="Favorite list" onchange="S.favSel=this.value;render()"><option value="items" ${S.favSel==='items'?'selected':''}>Favorite Items</option><option value="shops" ${S.favSel==='shops'?'selected':''}>Favorite Shops</option></select>`;
+ if(S.favSel==='shops')return `<h2>Favorite</h2>${sel}`+(S.favS.map((n,k)=>{const l=S.items.filter(i=>i.shop===n),f=l[0];return `<div class="row"><div class="ipic">🏪</div><div class="mid"><b>${esc(n)}</b><span>${f?esc(f.district)+', '+esc(f.city):''}</span><span>${l.length} items</span></div><div class="rt"><button class="heart" aria-label="Remove favorite" onclick="S.favS.splice(${k},1);render()">❤️</button><button class="plus" aria-label="View items" onclick="viewShop(${k})">›</button></div></div>`}).join('')||'<p class="msg">Abhi koi favorite shop nahi. Home par shop ke naam ke saath 🤍 dabayen.</p>');
+ return `<h2>Favorite</h2>${sel}`+(items.map(i=>itemRow(i,true)).join('')||'<p class="msg">Abhi koi favorite item nahi. Home par item ke naam ke saath 🤍 dabayen.</p>')}
+function homeView(){const c=isDemo()?'':((S.customer&&S.customer.pf.city)||'').trim().toLowerCase();
+ const list=c?S.items.filter(i=>i.city.trim().toLowerCase()===c):S.items;const shops=[...new Set(list.map(i=>i.shop))];
+ if(S.shop&&!shops.includes(S.shop))S.shop='';S.myCity=null;const shown=S.shop?list.filter(i=>i.shop===S.shop):list;
+ return `<select class="sel" style="width:100%;margin:6px 0 10px" aria-label="Select mart or shop" onchange="S.shop=this.value;render()"><option value="">All shops${c?' in '+esc(S.customer.pf.city):''}</option>${shops.map(n=>`<option value="${esc(n)}" ${n===S.shop?'selected':''}>${esc(n)}</option>`).join('')}</select>${c?'':'<p class="hint" style="margin:0 0 8px">Profile register karein to sirf aapki city ki shops show hongi.</p>'}<div class="hd"><h2>All items</h2><div class="cnt"><b>${shown.length}</b><span>Total items</span></div></div>${shown.map(i=>itemRow(i,true)).join('')||'<p class="msg">Aapki city mein abhi koi item nahi hai.</p>'}`}
+function ctl(i){if(i.status!=='Available')return `<button class="plus" disabled style="opacity:.35;cursor:not-allowed" aria-label="Not available">+</button>`;const b=S.bill.find(x=>x.id===i.id);return b?`<div class="step"><button onclick="chg(${i.id},-1)" aria-label="Less">−</button><b>${b.qty}</b><button onclick="chg(${i.id},1)" aria-label="More">+</button></div>`:`<button class="plus" aria-label="Add to bill" onclick="plus(${i.id})">+</button>`}
+function chg(id,d,min){const b=S.bill.find(x=>x.id===id);if(!b)return;b.qty+=d;if(b.qty<(min||1))S.bill=S.bill.filter(x=>x.id!==id);render()}
+function plus(id){if(!S.customer&&!isDemo()){S.tab='profile';S.msg='Bill mein item add karne ke liye pehle profile register karein.';return render()}S.bill.push({id,qty:1});render()}
+function billView(){const rows=S.bill.map(b=>({b,i:S.items.find(x=>x.id===b.id)})).filter(r=>r.i);
+ const gross=rows.reduce((a,r)=>a+r.b.qty*r.i.price,0),dsv=Math.round(rows.reduce((a,r)=>a+r.b.qty*(r.i.price-eff(r.i)),0)*100)/100,tax=fixRate('tax'),pos=fixRate('pos');
+ const rate=rows.length?rateOf(rows):0,auto=rows.length?autoDist(rows):null,dist=S.dist!==null?S.dist:(auto||0),dv=Math.round(dist*rate);BG={g:gross,r:rate,a:auto||0,t:tax,p:pos,d:dsv};
+ if(!rows.length)return '<h2>Bill</h2><p class="msg">Bill abhi khali hai. Home se item par + dabayen.</p>';
+ return `<h2>Bill</h2><div class="tw"><table><tr><th>Item</th><th>Shop</th><th>Qty</th><th>Price</th><th>Total</th></tr>${rows.map(r=>`<tr><td>${esc(r.i.name)}</td><td>${esc(r.i.shop)}</td><td><div class="step"><button onclick="chg(${r.i.id},-1)" aria-label="Less">−</button><b>${r.b.qty}</b><button onclick="chg(${r.i.id},1)" aria-label="More">+</button></div></td><td>${r.i.price}</td><td>${r.b.qty*r.i.price}</td></tr>`).join('')}</table></div>
+ <div class="sum"><div class="gr"><span>Gross total</span><b>Rs ${gross}</b></div>
+ ${tax>0?`<div class="gr"><span>Tax</span><b>Rs ${tax}</b></div>`:''}
+ ${pos>0?`<div class="gr"><span>POS fee</span><b>Rs ${pos}</b></div>`:''}
+ ${dsv>0?`<div class="gr"><span>Discount (offers)</span><b>− Rs ${dsv}</b></div>`:''}
+ <label>Total distance (km)<input id="dk" type="number" min="0" step="0.1" value="${dist||''}" placeholder="0" oninput="S.dist=+this.value||0;upd()"></label>${auto===null?'<p class="hint" style="margin:0">Location coordinates na hon to distance khud likhein.</p>':''}
+ <div class="gr"><span>Delivery charges<br><small id="dd" style="color:var(--mut)">${dist} km × Rs ${rate}/km</small></span><b id="dv">Rs ${dv}</b></div>
+ <div class="gr gt"><span>Grand total</span><b id="gt">Rs ${Math.max(0,gross+tax+pos-dsv+dv)}</b></div></div>`}
+const fixRate=k=>{const r=S.rates.find(x=>x.name.toLowerCase().includes(k)&&x.on!==false);return r?r.val:0};
+function upd(){const d=S.dist!==null?S.dist:BG.a,dv=Math.round(d*BG.r);$('dv').textContent='Rs '+dv;$('dd').textContent=`${d} km × Rs ${BG.r}/km`;$('gt').textContent='Rs '+Math.max(0,BG.g+BG.t+BG.p-BG.d+dv)}
+const ll=t=>{const m=String(t||'').match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);return m?[+m[1],+m[2]]:null};
+function hav(a,b){const R=6371,r=x=>x*Math.PI/180,dl=r(b[0]-a[0]),dn=r(b[1]-a[1]),h=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function admOf(i){return S.admins.find(a=>a.u===i.adm)}
+function rateOf(rows){const f=S.rates.find(x=>/delivery/i.test(x.name));if(f)return f.on!==false?f.val:0;const a=admOf(rows[0].i);return a&&a.rate!=null?a.rate:20}
+function autoDist(rows){const c=ll(S.customer&&S.customer.pf.loc);if(!c)return null;let t=0;for(const u of new Set(rows.map(r=>r.i.adm))){const a=S.admins.find(x=>x.u===u),l=a&&a.pf&&ll(a.pf.loc);if(!l)return null;t+=hav(c,l)}return Math.round(t*10)/10}
+function invView(){const pf=S.cur.pf;S.tmp={};if(fxv('a_pic',0,''))S.tmp.pic=fxv('a_pic',0,'');const own=S.items.filter(i=>i.adm===S.cur.u),cities=[...new Set([pf.city,...own.map(i=>i.city)])].sort(),sel=S.myCity!==null&&(S.myCity===''||cities.includes(S.myCity))?S.myCity:pf.city,mine=sel?own.filter(i=>i.city.trim().toLowerCase()===sel.trim().toLowerCase()):own;
+ return `<h2>Add item</h2><div class="form">${fxw('a_pic',`<label class="pic ${fxv('a_pic',0,'')?'has':''}" id="pic" style="${fxv('a_pic',0,'')?`background-image:url(${fxv('a_pic',0,'')})`:''}">📷<input type="file" accept="image/*" hidden onchange="pickPic(this)"></label>`)}<p class="hint" style="margin:-6px 0 0">Item picture (lazmi)</p>${FXH}<input id="in" placeholder="Item name">${fxw('a_cat',catSel('icat',fxv('a_cat',0,'')))}${fxw('a_shop',`<input id="is" placeholder="Mart / shop name" value="${esc(fxv('a_shop',0,S.cur.shop||''))}">`)}${fxw('a_dc',dcSel('idd','ic',fxv('a_dc',0,pf.district),fxv('a_dc',1,pf.city)))}${fxw('a_p',`<input id="ip" placeholder="Price (Rs)" inputmode="decimal" value="${esc(fxv('a_p',0,''))}">`)}${fxw('a_st',stSel('ist',fxv('a_st',0,'')))}<button class="big" onclick="saveItem()">Save item</button></div><p class="msg err" id="pe" hidden></p><div class="hd" style="margin-top:20px"><h2>My items</h2><div class="cnt"><b>${mine.length}</b><span>Total items</span></div></div><select class="sel" style="width:100%;margin:6px 0 12px" aria-label="Filter by city" onchange="S.myCity=this.value;render()"><option value="">All cities</option>${cities.map(c=>`<option value="${esc(c)}" ${c===sel?'selected':''}>${esc(c)}</option>`).join('')}</select>${mine.map(i=>itemRow(i,false)).join('')||'<p class="msg">Is city mein abhi koi item nahi hai.</p>'}`}
+function saveItem(){const g=id=>$(id).value.trim();const it={name:g('in'),shop:g('is'),district:g('idd'),city:g('ic'),price:parseFloat(g('ip')),status:g('ist'),cat:g('icat')};
+ if(!S.tmp.pic)return perr('Item ki picture lazmi hai.');
+ if(!it.name||!it.shop||!it.district||!it.city||!it.cat||!(it.price>=0))return perr('Item name, shop, district, city, aur price zaroori hain.');
+ fxSave([['a_pic',['#pic']],['a_cat',['icat']],['a_shop',['is']],['a_dc',['idd','ic']],['a_p',['ip']],['a_st',['ist']]]);S.myCity=it.city;it.id=S.iid++;it.pic=S.tmp.pic;it.adm=S.cur.u;S.cur.shop=it.shop;S.items.push(it);render()}
+function adminTab(){const f=S.cur.pf,t=S.tab;
+ if(t==='req'&&f)return '<h2>Requests</h2><p class="msg">Abhi koi request nahi hai.</p>';
+ if(t==='notif'&&f)return '<h2>Notifications</h2><p class="msg">Koi nayi notification nahi.</p>';
+ if(t==='inv'&&f)return invView();
+ return back()+(f?'<h2>Profile</h2>'+profCard(f,1)+locForm(f)+`<h2 style="margin-top:20px">Delivery charges</h2>${S.msg?`<p class="msg">${S.msg}</p>`:''}<div class="form"><input id="rt" type="number" min="0" placeholder="Rs per km" value="${S.cur.rate??''}"><button class="big" onclick="saveRate()">Save rate</button></div>`:adminProfile())}
+function saveRate(){S.cur.rate=Math.max(0,+$('rt').value||0);render();toast('Rate save ho gaya: Rs '+S.cur.rate+' per km')}
+function adminPanel(){const f=S.cur.pf;return `${back()}<h2>Admin panel</h2><div class="item"><div class="em">${f.pic?`<img src="${f.pic}" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover">`:'👤'}</div><b>${esc(f.name)}</b><span>${esc(f.mobile)}<br>${esc(f.city)}, ${esc(f.district)}<br>${esc(f.loc||'')}<br>${esc(f.address)}</span>${f.voice?`<br><audio controls src="${f.voice}" style="width:100%;margin-top:8px"></audio>`:''}</div>`}
+const isDemo=()=>S.role==='sadmin'&&S.sv==='demo';
+function billSwap(){const d=isDemo();if(d&&!S.inDemo){S.cb=S.bill;S.bill=S.dbill;S.inDemo=true}else if(!d&&S.inDemo){S.dbill=S.bill;S.bill=S.cb;S.inDemo=false}}
+function demoView(){const t=S.tab;return `<p class="hint" style="margin:0 0 6px;text-align:left">Bill Demo: customer ko jo kuch nazar aata hai wohi yahan dikhta hai.</p>`+(t==='bill'?billView():t==='notif'?'<h2>Notifications</h2><p class="msg">Koi nayi notification nahi.</p>':homeView())}
+function render(){billSwap();dots();buildDrawer();
+ const r=S.role;let h='';const t=tabs();
+ if(!r){h=`<div class="btnrow"><button class="big" onclick="go('customer')">Customer</button>`+
+  ROLES.map((x,i)=>S.shown[i]?`<button class="big alt pop" onclick="go('${x.k}')">${x.n}</button>`:'').join('')+`</div><p class="hint">Welcome! Customer se shuru karein.</p>`}
+ else if(r==='customer'||r==='rider'){
+  const k=r==='customer'?'customer':'rider';
+  if(S.tab==='home')h=homeView();
+  else if(S.tab==='fav')h=favView();
+  else if(S.tab==='profile')h=back()+(S.msg?`<p class="msg err">${S.msg}</p>`:'')+(k==='rider'?(S.rider?'<h2>Profile</h2>'+profCard(S.rider.pf,1)+locForm(S.rider.pf):adminProfile('rider')):(S.customer?'<h2>Profile</h2>'+profCard(S.customer.pf,1)+locForm(S.customer.pf):adminProfile('customer')));
+  else if(S.tab==='bill')h=billView();
+  else if(S.tab==='req')h=`<h2>Requests</h2><p class="msg">Abhi koi delivery request nahi hai.</p>`;
+  else h=`<h2>Notifications</h2><p class="msg">Koi nayi notification nahi.</p>`}
+ else if(r==='admin')h=!S.cur?login('admin'):adminTab();
+ else h=S.superOK?sa():login('sadmin');
+ main.innerHTML=h;
+ if(t){nav.hidden=false;nav.innerHTML=t.map(x=>`<button class="${S.tab===x[0]?'on':''}" ${x[3]?'disabled':''} onclick="S.tab='${x[0]}';S.msg='';S.editLoc=null;render()"><span class="ic">${x[1]}</span>${x[2]}</button>`).join('')}else nav.hidden=true;if(S.editLoc){const e=$(S.editLoc==='d'?'ld':'lc');e&&e.focus()}}
+render();
+</script></body></html>
